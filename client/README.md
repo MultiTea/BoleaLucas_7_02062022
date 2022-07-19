@@ -1,7 +1,7 @@
 # Groupomania
 
-1 : Vous aurez besoin de NodeJS et npm installés sur votre système.
-2 : L'application utilise les ports 3000 pour le frontend et 5000 pour le backend.
+- Vous aurez besoin de NodeJS et npm installés sur votre système.
+- L'application utilise les ports 3000 pour le frontend et 5000 pour le backend.
 
 ## Backend
 
