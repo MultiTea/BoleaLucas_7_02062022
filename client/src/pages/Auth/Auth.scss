@@ -1,0 +1,99 @@
+.Auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 1.5rem;
+  position: relative;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.topAuth {
+  gap: 1rem;
+
+  > img {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+    background-color: red;
+    background-image: var(--buttonBg);
+    background-size: 100%;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+  }
+}
+
+.infoForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  width: 50vh;
+
+  > div {
+    display: flex;
+    gap: 1rem;
+    height: 2rem;
+    width: 90%;
+  }
+}
+
+.infoInput {
+  border: none;
+  outline: none;
+  background-color: var(--inputColor);
+  border-radius: 8px;
+  padding: 20px;
+  flex: 1;
+}
+
+.authForm {
+  background-color: var(--cardColor);
+  border-radius: 1rem;
+  padding: 1rem;
+
+  > div {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.bottomForm {
+  flex-direction: column;
+  margin-top: 2rem;
+  margin-left: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 2.5rem;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .infoButton {
+      padding: 1rem;
+      width: 50%;
+    }
+  }
+
+  .link {
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
