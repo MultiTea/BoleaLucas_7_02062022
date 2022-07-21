@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { followUser, unfollowUser } from '../../actions/UserAction';
 
 const User = ({ person }) => {
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer.authData);
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
 

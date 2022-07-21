@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, useMantineTheme } from '@mantine/core';
-import { useParams } from 'react-router-dom';
 import { updatePost } from '../../actions/PostAction';
 
 function UpdatePost({ modalOpened, setModalOpened, data }) {
   const theme = useMantineTheme();
+  const posts = useSelector((state) => state.postReducer.posts);
 
   const { _id, ...other } = data;
   const [formData, setFormData] = useState(other);
   const dispatch = useDispatch();
-  const param = useParams();
-  const postId = param.id;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,8 +17,9 @@ function UpdatePost({ modalOpened, setModalOpened, data }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let PostData = formData;
     try {
-      dispatch(updatePost(postId));
+      dispatch(updatePost(_id));
       setModalOpened(false);
     } catch (err) {
       console.log(err);

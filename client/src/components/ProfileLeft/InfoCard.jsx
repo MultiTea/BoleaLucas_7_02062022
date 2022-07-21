@@ -6,11 +6,9 @@ import { logout } from '../../actions/AuthAction';
 
 import { UilPen } from '@iconscout/react-unicons';
 import ProfileModal from '../ProfileLeft/ProfileModal';
-import AdminModal from '../AdminTools/AdminModal';
 
 const InfoCard = () => {
   const [modalOpened, setModalOpened] = useState(false);
-  const [adminModalOpened, setAdminModalOpened] = useState(false);
 
   const dispatch = useDispatch();
   const params = useParams();
@@ -85,22 +83,6 @@ const InfoCard = () => {
         <button className="button logout-button" onClick={handleLogOut}>
           Déconnexion
         </button>
-        {!user.isAdmin ? (
-          ''
-        ) : (
-          <div>
-            <button
-              className="button logout-button"
-              onClick={() => setAdminModalOpened(true)}
-            >
-              Gérer les comptes
-              <AdminModal
-                adminModalOpened={adminModalOpened}
-                setAdminModalOpened={setAdminModalOpened}
-              />
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

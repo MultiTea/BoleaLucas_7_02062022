@@ -21,10 +21,10 @@ export const updatePost = (id, userId) => async (dispatch) => {
   }
 };
 
-export const deletePost = (id) => async (dispatch) => {
+export const deletePost = (id, userId) => async (dispatch) => {
   dispatch({ type: 'DELETE_POST_START' });
   try {
-    const { data } = await PostApi.deletePost(id);
+    const { data } = await PostApi.deletePost(id, userId);
     dispatch({ type: 'DELETE_POST_SUCCESS', data: data });
   } catch (error) {
     dispatch({ type: 'DELETE_POST_FAIL' });

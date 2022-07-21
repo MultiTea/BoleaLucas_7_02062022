@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import Comment from '../../img/comment.png';
 import Share from '../../img/share.png';
 import Heart from '../../img/like.png';
@@ -8,23 +7,28 @@ import NotLike from '../../img/notlike.png';
 import { UilPen, UilTimes } from '@iconscout/react-unicons';
 import { likePost } from '../../api/PostRequest';
 import UpdatePost from './UpdatePost';
-import * as UserApi from '../../api/UserRequest';
 import { deletePost } from '../../actions/PostAction';
 import { useDispatch } from 'react-redux';
+import * as UserApi from '../../api/UserRequest';
 
 const Post = ({ data }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
-
-  const dispatch = useDispatch();
-
   const [liked, setLiked] = useState(data.likes.includes(user._id));
   const [likes, setLikes] = useState(data.likes.length);
-  const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
+  const [person, setPerson] = useState([]);
+
+  useEffect(() => {
+    const fetchProfile = () => {
+      const person = UserApi.getUser(data.userId);
+      setPerson(person);
+      console.log(person);
+    };
+    fetchProfile(person);
+  }, []);
 
   const [modalOpened, setModalOpened] = useState(false);
 
-  const params = useParams();
-  const profileUserId = params.id;
+  const dispatch = useDispatch();
 
   const handleLike = () => {
     likePost(data._id, user._id);
@@ -36,20 +40,10 @@ const Post = ({ data }) => {
     <div className="Post">
       <div className="postHeader">
         <div className="profileName">
-          <img
-            src={
-              user.profilePicture
-                ? serverPublic + user.profilePicture
-                : serverPublic + 'defaultProfile.png'
-            }
-            alt="ProfileImage"
-            className="profileImg"
-          />
-          <span>
-            {user.firstname} {user.lastname}
-          </span>
+          <img src={person.profileImage} className="profileImg" />
+          <span>{person.firstname + ' ' + person.lastname}</span>
         </div>
-        {user._id === profileUserId ? (
+        {user._id === data.userId || user.isAdmin ? (
           <div className="editPost">
             <UilPen
               width="1.2rem"
@@ -64,14 +58,13 @@ const Post = ({ data }) => {
             <UilTimes
               width="1.4rem"
               height="1.4rem"
-              onClick={() => dispatch(deletePost(data._id))}
+              onClick={() => dispatch(deletePost(data._id, data.userId))}
             />
           </div>
         ) : (
           ''
         )}
       </div>
-
       <div className="detail">
         <span>{data.desc}</span>
       </div>
