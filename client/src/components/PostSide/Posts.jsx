@@ -22,7 +22,7 @@ const Posts = () => {
       {loading
         ? 'Recherche des posts...'
         : posts.map((post, id) => {
-            return <Post data={post} id={id} />;
+            return <Post data={post} id={id} key={id} />;
           })}
     </div>
   );

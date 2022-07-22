@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Comment from '../../img/comment.png';
-import Share from '../../img/share.png';
+
 import Heart from '../../img/like.png';
 import NotLike from '../../img/notlike.png';
-import { UilPen, UilTimes } from '@iconscout/react-unicons';
+import {
+  UilPen,
+  UilTimes,
+  UilCommentDots,
+  UilMessage,
+} from '@iconscout/react-unicons';
+
 import { likePost } from '../../api/PostRequest';
 import UpdatePost from './UpdatePost';
-import { deletePost } from '../../actions/PostAction';
+import { deletePost } from '../../api/PostRequest';
 import { useDispatch } from 'react-redux';
 import * as UserApi from '../../api/UserRequest';
+import PostHeader from './PostHeader';
 
 const Post = ({ data }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
   const [liked, setLiked] = useState(data.likes.includes(user._id));
   const [likes, setLikes] = useState(data.likes.length);
-  const [person, setPerson] = useState([]);
+  const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    const fetchProfile = () => {
-      const person = UserApi.getUser(data.userId);
-      setPerson(person);
-      console.log(person);
+    const fetchPersons = async () => {
+      const { data } = await UserApi.getUser(data.userId);
+      setPersons(data);
     };
-    fetchProfile(person);
+    fetchPersons(0);
   }, []);
 
   const [modalOpened, setModalOpened] = useState(false);
@@ -37,11 +42,14 @@ const Post = ({ data }) => {
   };
 
   return (
-    <div className="Post">
+    <div className="Post" key={data.id}>
       <div className="postHeader">
-        <div className="profileName">
-          <img src={person.profileImage} className="profileImg" />
-          <span>{person.firstname + ' ' + person.lastname}</span>
+        <div>
+          {persons.map((person, id) => {
+            if (person._id !== user._id) {
+              return <PostHeader person={person} key={id} />;
+            }
+          })}
         </div>
         {user._id === data.userId || user.isAdmin ? (
           <div className="editPost">
@@ -81,8 +89,8 @@ const Post = ({ data }) => {
           style={{ cursor: 'pointer' }}
           onClick={handleLike}
         />
-        <img src={Comment} alt="" />
-        <img src={Share} alt="" />
+        <UilCommentDots />
+        <UilMessage />
       </div>
 
       <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
