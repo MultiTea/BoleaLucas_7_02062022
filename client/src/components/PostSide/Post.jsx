@@ -15,7 +15,6 @@ import UpdatePost from './UpdatePost';
 import { deletePost } from '../../api/PostRequest';
 import { useDispatch } from 'react-redux';
 import * as UserApi from '../../api/UserRequest';
-import PostHeader from './PostHeader';
 
 const Post = ({ data }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
@@ -23,17 +22,20 @@ const Post = ({ data }) => {
   const [likes, setLikes] = useState(data.likes.length);
   const [persons, setPersons] = useState([]);
 
+  const [isUpdated, setIsUpdated] = useState(false);
+  const [textUpdate, setTextUpdate] = useState(null);
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchPersons = async () => {
-      const { data } = await UserApi.getUser(data.userId);
+      const { data } = await UserApi.getAllUser();
       setPersons(data);
     };
     fetchPersons(0);
   }, []);
 
   const [modalOpened, setModalOpened] = useState(false);
-
-  const dispatch = useDispatch();
 
   const handleLike = () => {
     likePost(data._id, user._id);
@@ -42,12 +44,30 @@ const Post = ({ data }) => {
   };
 
   return (
-    <div className="Post" key={data.id}>
+    <div className="Post" key={data._id}>
       <div className="postHeader">
         <div>
-          {persons.map((person, id) => {
-            if (person._id !== user._id) {
-              return <PostHeader person={person} key={id} />;
+          {persons.map((person) => {
+            if (person._id === data.userId) {
+              return (
+                <div className="postHeaderAlign">
+                  <img
+                    className="profileImg"
+                    src={
+                      person.profileImage
+                        ? process.env.REACT_APP_PUBLIC_FOLDER +
+                          person.profileImage
+                        : process.env.REACT_APP_PUBLIC_FOLDER +
+                          'defaultProfile.png'
+                    }
+                    alt={"Emplacement de l'image de profil"}
+                  />
+                  <div className="profileName">
+                    <span>{person.firstname + ' ' + person.lastname}</span>
+                    <span>{person.worksAt}</span>
+                  </div>
+                </div>
+              );
             }
           })}
         </div>
@@ -66,7 +86,11 @@ const Post = ({ data }) => {
             <UilTimes
               width="1.4rem"
               height="1.4rem"
-              onClick={() => dispatch(deletePost(data._id, data.userId))}
+              onClick={() => {
+                if (window.confirm('Voulez-vous supprimer cet article?')) {
+                  deletePost(data._id, data.userId);
+                }
+              }}
             />
           </div>
         ) : (

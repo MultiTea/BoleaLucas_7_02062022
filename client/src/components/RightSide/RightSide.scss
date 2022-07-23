@@ -6,11 +6,12 @@
 
 .navIcons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 
   > svg {
     width: 1.7rem;
     height: 1.7rem;
+    margin: 0 1rem;
   }
 
   a > svg {

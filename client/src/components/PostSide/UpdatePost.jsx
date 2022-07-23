@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, useMantineTheme } from '@mantine/core';
-import { updatePost } from '../../actions/PostAction';
+import { updatePost } from '../../api/PostRequest';
 
 function UpdatePost({ modalOpened, setModalOpened, data }) {
   const theme = useMantineTheme();
-  const posts = useSelector((state) => state.postReducer.posts);
+  const { user } = useSelector((state) => state.authReducer.authData);
+  const { post } = useSelector((state) => state.postReducer.posts); // Récupération des informations du posttion des informations de l'utilisateur
 
-  const { _id, ...other } = data;
-  const [formData, setFormData] = useState(other);
+  const [formData, setFormData] = useState();
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -19,7 +19,7 @@ function UpdatePost({ modalOpened, setModalOpened, data }) {
     e.preventDefault();
     let PostData = formData;
     try {
-      dispatch(updatePost(_id));
+      dispatch(updatePost(data._id));
       setModalOpened(false);
     } catch (err) {
       console.log(err);
@@ -49,9 +49,8 @@ function UpdatePost({ modalOpened, setModalOpened, data }) {
               type="text"
               className="infoInput"
               name="desc"
-              placeholder="Description"
               onChange={handleChange}
-              value={formData.desc}
+              defaultValue={0}
             ></input>
           </div>
         </div>

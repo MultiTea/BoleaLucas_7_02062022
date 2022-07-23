@@ -29,12 +29,12 @@ const postReducer = (
     case 'UPDATE_POST_FAIL':
       return { ...state, loading: false, error: true };
 
-    case 'DELETE_POST_START':
-      return { ...state, loading: true, error: false };
-    case 'DELETE_POST_SUCCESS':
-      return { ...state, posts: action.data, loading: false, error: false };
-    case 'DELETE_POST_FAIL':
-      return { ...state, loading: false, error: true };
+    case 'DELETE_POST':
+      return {
+        ...state,
+        posts: action.data,
+        error: false,
+      };
 
     default:
       return state;

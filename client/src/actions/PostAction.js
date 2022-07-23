@@ -11,22 +11,17 @@ export const getTimelinePosts = (id) => async (dispatch) => {
   }
 };
 
-export const updatePost = (id, userId) => async (dispatch) => {
+export const updatePost = (id, data) => async (dispatch) => {
   dispatch({ type: 'UPDATE_POST_START' });
   try {
-    const { data } = await PostApi.updatePost(id, userId);
+    const { data } = await PostApi.updatePost(id, data);
     dispatch({ type: 'UPDATE_POST_SUCCESS', data: data });
   } catch (error) {
     dispatch({ type: 'UPDATE_POST_FAIL' });
   }
 };
 
-export const deletePost = (id, userId) => async (dispatch) => {
+export const deletePost = (id, data) => async (dispatch) => {
   dispatch({ type: 'DELETE_POST_START' });
-  try {
-    const { data } = await PostApi.deletePost(id, userId);
-    dispatch({ type: 'DELETE_POST_SUCCESS', data: data });
-  } catch (error) {
-    dispatch({ type: 'DELETE_POST_FAIL' });
-  }
+  PostApi.deletePost(id, data);
 };
