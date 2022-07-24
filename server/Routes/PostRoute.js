@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post('/', createPost);
 router.get('/:id', getPost);
-router.put('/:id', authMiddleWare, updatePost);
+router.put('/:id', updatePost);
 router.delete('/:id', authMiddleWare, deletePost);
 router.put('/:id/like', likePost);
 router.get('/:id/timeline', getTimelinePosts);

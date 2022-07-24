@@ -133,10 +133,23 @@
   border-radius: 1rem;
   gap: 1rem;
 
-  > img {
-    width: 100%;
-    max-height: fit-content;
-    object-fit: cover;
+  .detail {
+    > img {
+      width: 100%;
+      max-height: fit-content;
+      object-fit: cover;
+      margin-top: 1rem;
+    }
+    textarea {
+      background-color: var(--inputColor);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 0.93rem;
+      border: none;
+      outline: none;
+      width: -webkit-fill-available;
+    }
   }
 }
 
@@ -158,7 +171,7 @@
   align-items: center;
 }
 
-.profileImg {
+.profileItem {
   border-radius: 50%;
   height: 2.6rem;
   width: 2.6rem;
@@ -196,4 +209,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  gap: 0 !important;
+
+  label {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.83em;
+    font-weight: bold;
+  }
+
+  > div > input {
+    width: 90%;
+  }
+
+  input[type='file'] {
+    margin: 0 0 0.75rem 0;
+  }
 }

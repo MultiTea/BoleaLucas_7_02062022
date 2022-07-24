@@ -50,7 +50,7 @@ export const updateUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         req.body.password = await bcrypt.hash(password, salt);
       }
-      // have to change this
+
       const user = await UserModel.findByIdAndUpdate(id, req.body, {
         new: true,
       });
@@ -62,7 +62,6 @@ export const updateUser = async (req, res) => {
       console.log({ user, token });
       res.status(200).json({ user, token });
     } catch (error) {
-      console.log('Error agya hy');
       res.status(500).json(error);
     }
   } else {
@@ -77,9 +76,9 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const id = req.params.id;
 
-  const { currentUserId, isAdmin } = req.body;
+  const { _id, isAdmin } = req.body;
 
-  if (id === currentUserId || isAdmin) {
+  if (id === _id || isAdmin) {
     try {
       await UserModel.findByIdAndDelete(id);
       res.status(200).json('Utilisateur supprimé avec succès.');

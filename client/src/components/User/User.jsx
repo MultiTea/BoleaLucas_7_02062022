@@ -23,7 +23,7 @@ const User = ({ person }) => {
       <div>
         <img
           src={
-            person.coverPicture
+            person.profileImage
               ? serverPublic + person.profileImage
               : serverPublic + 'defaultProfile.png'
           }
@@ -32,7 +32,6 @@ const User = ({ person }) => {
         />
         <div className="name">
           <span>{person.firstname + ' ' + person.lastname}</span>
-          <span>{person.worksAt}</span>
         </div>
       </div>
 

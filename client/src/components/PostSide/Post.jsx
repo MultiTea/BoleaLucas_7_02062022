@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import Heart from '../../img/like.png';
@@ -11,10 +11,10 @@ import {
 } from '@iconscout/react-unicons';
 
 import { likePost } from '../../api/PostRequest';
-import UpdatePost from './UpdatePost';
-import { deletePost } from '../../api/PostRequest';
+import { updatePost, deletePost } from '../../api/PostRequest';
 import { useDispatch } from 'react-redux';
 import * as UserApi from '../../api/UserRequest';
+import { uploadImage } from '../../api/UploadRequest';
 
 const Post = ({ data }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
@@ -23,9 +23,36 @@ const Post = ({ data }) => {
   const [persons, setPersons] = useState([]);
 
   const [isUpdated, setIsUpdated] = useState(false);
-  const [textUpdate, setTextUpdate] = useState(null);
+  const [image, setImage] = useState(null);
+  const desc = useRef();
 
   const dispatch = useDispatch();
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      setImage(img);
+    }
+  };
+
+  const updateItem = (e) => {
+    e.preventDefault();
+
+    if (image) {
+      const data = new FormData();
+      const fileName = Date.now() + image.name;
+      data.append('name', fileName);
+      data.append('file', image);
+      data.image = fileName;
+      try {
+        dispatch(uploadImage(data));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    dispatch(updatePost(data._id, data.userId, data.isAdmin));
+    setIsUpdated(false);
+  };
 
   useEffect(() => {
     const fetchPersons = async () => {
@@ -34,8 +61,6 @@ const Post = ({ data }) => {
     };
     fetchPersons(0);
   }, []);
-
-  const [modalOpened, setModalOpened] = useState(false);
 
   const handleLike = () => {
     likePost(data._id, user._id);
@@ -52,7 +77,7 @@ const Post = ({ data }) => {
               return (
                 <div className="postHeaderAlign">
                   <img
-                    className="profileImg"
+                    className="profileItem"
                     src={
                       person.profileImage
                         ? process.env.REACT_APP_PUBLIC_FOLDER +
@@ -71,21 +96,16 @@ const Post = ({ data }) => {
             }
           })}
         </div>
-        {user._id === data.userId || user.isAdmin ? (
+        {user._id === data.userId || user.isAdmin === true ? (
           <div className="editPost">
             <UilPen
               width="1.2rem"
               height="1.2rem"
-              onClick={() => setModalOpened(true)}
-            />
-            <UpdatePost
-              modalOpened={modalOpened}
-              setModalOpened={setModalOpened}
-              data={user}
+              onClick={() => setIsUpdated(!isUpdated)}
             />
             <UilTimes
-              width="1.4rem"
-              height="1.4rem"
+              width="1.5rem"
+              height="1.5rem"
               onClick={() => {
                 if (window.confirm('Voulez-vous supprimer cet article?')) {
                   deletePost(data._id, data.userId);
@@ -98,13 +118,46 @@ const Post = ({ data }) => {
         )}
       </div>
       <div className="detail">
-        <span>{data.desc}</span>
+        {isUpdated === false && <span>{data.desc}</span>}
+        {isUpdated && (
+          <div>
+            <textarea ref={desc} defaultValue={data.desc} />
+          </div>
+        )}
       </div>
 
-      <img
-        src={data.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ''}
-        alt=""
-      />
+      {isUpdated === false ? (
+        <img
+          src={
+            data.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ''
+          }
+          alt=""
+        />
+      ) : (
+        <img
+          src={image ? '' : process.env.REACT_APP_PUBLIC_FOLDER + data.image}
+          alt=""
+        />
+      )}
+
+      {image && (
+        <div className="previewImage">
+          <UilTimes onClick={() => setImage(null)} />
+          <img src={URL.createObjectURL(image)} alt="" />
+        </div>
+      )}
+
+      {isUpdated && (
+        <div className="button-container">
+          <div className="inputForm">
+            <label for="profileImage">Modifier l'image</label>
+            <input type="file" onChange={onImageChange} />
+          </div>
+          <button className="button ps-button" onClick={updateItem}>
+            Enregistrer
+          </button>
+        </div>
+      )}
 
       <div className="postReact">
         <img

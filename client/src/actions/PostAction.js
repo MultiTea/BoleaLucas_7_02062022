@@ -11,10 +11,10 @@ export const getTimelinePosts = (id) => async (dispatch) => {
   }
 };
 
-export const updatePost = (id, data) => async (dispatch) => {
+export const updatePost = (id) => async (dispatch) => {
   dispatch({ type: 'UPDATE_POST_START' });
   try {
-    const { data } = await PostApi.updatePost(id, data);
+    const { data } = await PostApi.updatePost(id);
     dispatch({ type: 'UPDATE_POST_SUCCESS', data: data });
   } catch (error) {
     dispatch({ type: 'UPDATE_POST_FAIL' });
