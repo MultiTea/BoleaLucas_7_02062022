@@ -10,7 +10,9 @@ const authMiddleWare = async (req, res, next) => {
     if (token) {
       const decoded = jwt.verify(token, secret);
       console.log(decoded);
-      req.body._id = decoded?.id;
+      req.body = { userId: decoded?.id, isAdmin: decoded?.isAdmin };
+    } else {
+      throw new Error("Vous n'êtes pas connecté");
     }
     next();
   } catch (error) {

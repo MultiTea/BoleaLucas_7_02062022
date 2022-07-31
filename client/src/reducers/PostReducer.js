@@ -25,14 +25,23 @@ const postReducer = (
     case 'UPDATE_POST_START':
       return { ...state, loading: true, error: false };
     case 'UPDATE_POST_SUCCESS':
-      return { ...state, posts: action.data, loading: false, error: false };
+      return {
+        ...state,
+        posts: [
+          ...state.posts.map((post) =>
+            post._id === action.data._id ? action.data : post
+          ),
+        ],
+        loading: false,
+        error: false,
+      };
     case 'UPDATE_POST_FAIL':
       return { ...state, loading: false, error: true };
 
     case 'DELETE_POST':
       return {
         ...state,
-        posts: action.data,
+        posts: [...state.posts.filter((post) => post._id !== action.id)],
         error: false,
       };
 
