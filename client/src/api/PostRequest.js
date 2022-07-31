@@ -16,5 +16,21 @@ export const getPost = (id) => API.get(`/post/${id}`);
 export const getTimelinePosts = (id) => API.get(`/post/${id}/timeline`);
 export const likePost = (id, userId) =>
   API.put(`post/${id}/like`, { userId: userId });
-export const updatePost = (id, data) => API.put(`/post/${id}/`, data);
-export const deletePost = (id, data) => API.delete(`/post/${id}`, data);
+export const updatePost = (id, data) => async (dispatch) => {
+  try {
+    dispatch({ type: 'UPDATE_POST_START' });
+    await API.put(`/post/${id}/`, data);
+    dispatch({ type: 'UPDATE_POST_SUCCESS', data });
+  } catch (error) {
+    dispatch({ type: 'UPDATE_POST_FAIL' });
+  }
+};
+
+export const deletePost = (id, data) => async (dispatch) => {
+  try {
+    API.delete(`/post/${id}`, data);
+    dispatch({ type: 'DELETE_POST', id });
+  } catch (error) {
+    console.log(error);
+  }
+};

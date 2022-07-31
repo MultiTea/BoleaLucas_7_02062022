@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import Heart from '../../img/like.png';
@@ -24,7 +24,7 @@ const Post = ({ data }) => {
 
   const [isUpdated, setIsUpdated] = useState(false);
   const [image, setImage] = useState(null);
-  const desc = useRef();
+  const [desc, setDesc] = useState(data?.desc || '');
 
   const dispatch = useDispatch();
 
@@ -35,23 +35,28 @@ const Post = ({ data }) => {
     }
   };
 
-  const updateItem = (e) => {
+  const updateItem = async (e) => {
     e.preventDefault();
 
-    if (image) {
-      const data = new FormData();
-      const fileName = Date.now() + image.name;
-      data.append('name', fileName);
-      data.append('file', image);
-      data.image = fileName;
-      try {
-        dispatch(uploadImage(data));
-      } catch (err) {
-        console.log(err);
+    const post = {
+      ...data,
+      desc,
+    };
+
+    try {
+      if (image) {
+        const data = new FormData();
+        const fileName = Date.now() + image.name;
+        data.append('name', fileName);
+        data.append('file', image);
+        post.image = fileName;
+        uploadImage(data);
       }
+      dispatch(updatePost(data._id, post));
+      setIsUpdated(false);
+    } catch (err) {
+      console.log(err);
     }
-    dispatch(updatePost(data._id, data.userId, data.isAdmin));
-    setIsUpdated(false);
   };
 
   useEffect(() => {
@@ -68,6 +73,12 @@ const Post = ({ data }) => {
     liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1);
   };
 
+  const handleDeletePost = (id, data) => {
+    if (window.confirm('Voulez-vous supprimer ce post ?')) {
+      dispatch(deletePost(id, data));
+    }
+  };
+
   return (
     <div className="Post" key={data._id}>
       <div className="postHeader">
@@ -75,7 +86,7 @@ const Post = ({ data }) => {
           {persons.map((person) => {
             if (person._id === data.userId) {
               return (
-                <div className="postHeaderAlign">
+                <div className="postHeaderAlign" key={person._id}>
                   <img
                     className="profileItem"
                     src={
@@ -93,6 +104,8 @@ const Post = ({ data }) => {
                   </div>
                 </div>
               );
+            } else {
+              return null;
             }
           })}
         </div>
@@ -107,9 +120,10 @@ const Post = ({ data }) => {
               width="1.5rem"
               height="1.5rem"
               onClick={() => {
-                if (window.confirm('Voulez-vous supprimer cet article?')) {
-                  deletePost(data._id, data.userId);
-                }
+                handleDeletePost(data._id, {
+                  userId: data.userId,
+                  isAdmin: user.isAdmin,
+                });
               }}
             />
           </div>
@@ -118,10 +132,13 @@ const Post = ({ data }) => {
         )}
       </div>
       <div className="detail">
-        {isUpdated === false && <span>{data.desc}</span>}
+        {!isUpdated && <span>{data.desc}</span>}
         {isUpdated && (
           <div>
-            <textarea ref={desc} defaultValue={data.desc} />
+            <textarea
+              onChange={(e) => setDesc(e.target.value)}
+              value={data.desc}
+            />
           </div>
         )}
       </div>
@@ -150,7 +167,7 @@ const Post = ({ data }) => {
       {isUpdated && (
         <div className="button-container">
           <div className="inputForm">
-            <label for="profileImage">Modifier l'image</label>
+            <label htmlFor="profileImage">Modifier l'image</label>
             <input type="file" onChange={onImageChange} />
           </div>
           <button className="button ps-button" onClick={updateItem}>
