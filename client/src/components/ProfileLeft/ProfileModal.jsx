@@ -84,7 +84,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
         <div>
           <div className="inputForm">
-            <label for="firstname">Prénom</label>
+            <label htmlFor="firstname">Prénom</label>
             <input
               type="text"
               className="infoInput"
@@ -96,7 +96,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
           </div>
 
           <div className="inputForm">
-            <label for="lastname">Nom</label>
+            <label htmlFor="lastname">Nom</label>
             <input
               type="text"
               className="infoInput"
@@ -109,7 +109,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         </div>
 
         <div className="inputForm">
-          <label for="worksAt">Poste</label>
+          <label htmlFor="worksAt">Poste</label>
           <div>
             <input
               type="text"
@@ -123,7 +123,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         </div>
 
         <div className="inputForm">
-          <label for="livesIn">Habite à</label>
+          <label htmlFor="livesIn">Habite à</label>
           <input
             type="text"
             className="infoInput"
@@ -135,7 +135,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
         </div>
 
         <div className="inputForm">
-          <label for="about">Bio</label>
+          <label htmlFor="about">Bio</label>
           <textarea
             type="text"
             className="infoInput"
@@ -152,11 +152,11 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
         <div className="imgUpload">
           <div className="inputForm">
-            <label for="profileImage">Image de profil</label>
+            <label htmlFor="profileImage">Image de profil</label>
             <input type="file" name="profileImage" onChange={onImageChange} />
           </div>
           <div className="inputForm">
-            <label for="coverImage">Bannière de profil</label>
+            <label htmlFor="coverImage">Bannière de profil</label>
             <input type="file" name="coverImage" onChange={onImageChange} />
           </div>
         </div>

@@ -137,7 +137,7 @@ const Post = ({ data }) => {
           <div>
             <textarea
               onChange={(e) => setDesc(e.target.value)}
-              value={data.desc}
+              defaultValue={data.desc}
             />
           </div>
         )}
