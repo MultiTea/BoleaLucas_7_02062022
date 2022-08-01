@@ -55,7 +55,7 @@ export const updateUser = async (req, res) => {
         new: true,
       });
       const token = jwt.sign(
-        { username: user.username, id: user._id },
+        { email: user.email, id: user._id },
         process.env.JWT_KEY,
         { expiresIn: '1h' }
       );
