@@ -37,86 +37,93 @@ const PostShare = () => {
   const handleUpload = async (e) => {
     e.preventDefault();
 
-    //post data
-    const newPost = {
-      userId: user._id,
-      desc: desc.current.value,
-    };
+    if (!image && desc.current.value == '') {
+      window.alert('Vous devez au moins poster une image ou un texte.');
+    } else if (desc.current.value || image) {
+      //post data
+      const newPost = {
+        userId: user._id,
+        desc: desc.current.value,
+      };
 
-    // if there is an image with post
-    if (image) {
-      const data = new FormData();
-      const fileName = Date.now() + image.name;
-      data.append('name', fileName);
-      data.append('file', image);
-      newPost.image = fileName;
-      try {
-        dispatch(uploadImage(data));
-      } catch (err) {
-        console.log(err);
+      // if there is an image with post
+      if (image) {
+        const data = new FormData();
+        const fileName = Date.now() + image.name;
+        data.append('name', fileName);
+        data.append('file', image);
+        newPost.image = fileName;
+        try {
+          dispatch(uploadImage(data));
+        } catch (err) {
+          console.log(err);
+        }
       }
+      dispatch(uploadPost(newPost));
+      reset();
     }
-    dispatch(uploadPost(newPost));
-    reset();
   };
-  return (
-    <div className="PostShare">
-      <div className="inputField">
-        <img
-          src={
-            user.profileImage
-              ? serverPublic + user.profileImage
-              : serverPublic + 'defaultProfile.png'
-          }
-          alt=""
-        />
-        <input ref={desc} required type="text" placeholder="Quoi de neuf ?" />
-      </div>
 
-      <div>
-        <div className="PostOptions">
-          <div
-            className="option photo"
-            onClick={() => imageRef.current.click()}
-          >
-            <UilScenery />
-            Photo
-          </div>
-          <div className="option video">
-            <UilPlayCircle />
-            Video
-          </div>{' '}
-          <div className="option location">
-            <UilLocationPoint />
-            Je suis là
-          </div>{' '}
-          <div className="option shedule">
-            <UilSchedule />
-            Événement
-          </div>
-          <button
-            className="button ps-button"
-            onClick={handleUpload}
-            disabled={loading}
-          >
-            {loading ? 'Chargement' : 'Publier'}
-          </button>
-          <div style={{ display: 'none' }}>
-            <input
-              type="file"
-              name="myImage"
-              ref={imageRef}
-              onChange={onImageChange}
-            />
-          </div>
+  return (
+    <div>
+      <div className="PostShare">
+        <div className="inputField">
+          <img
+            src={
+              user.profileImage
+                ? serverPublic + user.profileImage
+                : serverPublic + 'defaultProfile.png'
+            }
+            alt=""
+          />
+          <input ref={desc} required type="text" placeholder="Quoi de neuf ?" />
         </div>
 
-        {image && (
-          <div className="previewImage">
-            <UilTimes onClick={() => setImage(null)} />
-            <img src={URL.createObjectURL(image)} alt="" />
+        <div>
+          <div className="PostOptions">
+            <div
+              className="option photo"
+              onClick={() => imageRef.current.click()}
+            >
+              <UilScenery />
+              Photo
+            </div>
+            <div className="option video">
+              <UilPlayCircle />
+              Video
+            </div>{' '}
+            <div className="option location">
+              <UilLocationPoint />
+              Je suis là
+            </div>{' '}
+            <div className="option shedule">
+              <UilSchedule />
+              Événement
+            </div>
+            <button
+              className="button ps-button"
+              onClick={handleUpload}
+              disabled={loading}
+            >
+              {loading ? 'Chargement' : 'Publier'}
+            </button>
+            <div style={{ display: 'none' }}>
+              <input
+                type="file"
+                name="myImage"
+                ref={imageRef}
+                onChange={onImageChange}
+              />
+            </div>
           </div>
-        )}
+
+          {image && (
+            <div className="previewImage">
+              <UilTimes onClick={() => setImage(null)} />
+              <img src={URL.createObjectURL(image)} alt="" />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

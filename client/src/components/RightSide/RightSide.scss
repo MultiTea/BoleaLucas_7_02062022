@@ -7,6 +7,7 @@
 .navIcons {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 
   > svg {
     width: 1.7rem;
@@ -17,6 +18,12 @@
   a > svg {
     width: 1.7rem;
     height: 1.7rem;
+  }
+
+  .logout-button {
+    width: 7rem;
+    height: 2rem;
+    margin-left: 1rem;
   }
 }
 

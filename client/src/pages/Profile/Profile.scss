@@ -45,6 +45,7 @@
   width: 100%;
   border-radius: 1.5rem;
   box-shadow: var(--profileShadow);
+  padding-bottom: 2rem;
 
   > div {
     display: flex;
@@ -119,13 +120,6 @@
     margin-top: 2rem;
     height: 2rem !important;
   }
-}
-
-.logout-button {
-  width: 7rem;
-  height: 2rem;
-  margin: 2rem 0;
-  align-self: flex-end;
 }
 
 .imgUpload {

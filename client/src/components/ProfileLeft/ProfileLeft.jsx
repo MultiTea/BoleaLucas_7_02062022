@@ -3,15 +3,19 @@ import FollowersCard from '../../components/ProfileSide/FollowersCard';
 import LogoSearch from '../../components/ProfileSide/LogoSearch';
 import '../ProfileSide/ProfileSide.scss';
 import InfoCard from './InfoCard';
+import { useMediaQuery } from 'react-responsive';
 
 const ProfileLeft = () => {
+  const isMobileDevice = useMediaQuery({ minDeviceWidth: 768 });
   return (
     <div>
-      <div className="Top">
-        <LogoSearch />
-      </div>
+      {isMobileDevice && (
+        <div className="Top">
+          <LogoSearch />
+        </div>
+      )}
       <div className="ProfileSide">
-        <InfoCard />
+        {isMobileDevice && <InfoCard />}
         <FollowersCard />
       </div>
     </div>

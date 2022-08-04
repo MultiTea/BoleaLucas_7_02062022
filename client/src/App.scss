@@ -53,7 +53,13 @@
   }
 }
 
-.flexSide {
+.flexLSide {
+  flex-basis: 20%;
+  flex-shrink: 1;
+  padding: 1rem;
+}
+
+.flexRSide {
   flex-basis: 20%;
   flex-shrink: 1;
   padding: 1rem;
@@ -80,4 +86,101 @@
 input,
 textarea {
   font-family: 'Lato';
+}
+
+/* MOBILE */
+
+$breakpoint-mobile: 768px;
+
+@media (max-width: $breakpoint-mobile) {
+  .Home {
+    flex-direction: column !important;
+
+    > :nth-child(2) {
+      order: 4;
+    }
+
+    > :nth-child(4) {
+      order: 5;
+    }
+
+    .Top {
+      margin: 1rem;
+    }
+  }
+
+  .Profile {
+    flex-direction: column !important;
+    height: fit-content !important;
+
+    > :nth-child(1) {
+      order: 1;
+    }
+  }
+
+  .profileCenter {
+    .Top {
+      margin: 1rem;
+    }
+  }
+
+  .flexMain {
+    max-width: 100%;
+    flex-grow: 1;
+  }
+
+  .ProfileSide {
+    padding: 0 !important;
+    overflow: unset !important;
+  }
+
+  .ProfileCard {
+    width: -webkit-fill-available;
+  }
+
+  .PostSide {
+    height: fit-content !important;
+    overflow: hidden !important;
+  }
+
+  .Top {
+    margin: 1rem 0 1rem 0;
+
+    .InfoCard {
+      box-shadow: none !important;
+    }
+  }
+
+  .navIcons {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .MobileProfileImage {
+    display: flex;
+    align-items: center;
+    background-color: var(--inputColor);
+    padding: 0.1rem 1rem 0.1rem 0;
+    border-radius: 2.5rem;
+
+    &:hover {
+      cursor: pointer;
+      color: var(--location);
+      background: #fca61f30;
+    }
+
+    .profileImage {
+      border-radius: 50%;
+      height: 2.6rem;
+      width: 2.6rem;
+      object-fit: cover;
+      object-position: 0% 15%;
+      margin-right: 10px;
+    }
+
+    span {
+      font-weight: bold;
+    }
+  }
 }
