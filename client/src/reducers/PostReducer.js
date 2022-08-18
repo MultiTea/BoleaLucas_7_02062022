@@ -15,6 +15,19 @@ const postReducer = (
     case 'UPLOAD_FAIL':
       return { ...state, uploading: false, error: true };
 
+    case 'LIKE_POST':
+      console.log('action.data', action.data);
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          if (post._id === action.data._id) {
+            return action.data;
+          } else {
+            return post;
+          }
+        }),
+      };
+
     case 'RETREIVING_START':
       return { ...state, loading: true, error: false };
     case 'RETREIVING_SUCCESS':

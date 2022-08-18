@@ -10,21 +10,23 @@ import {
   UilMessage,
 } from '@iconscout/react-unicons';
 
-import { likePost } from '../../api/PostRequest';
 import { updatePost, deletePost } from '../../api/PostRequest';
+import { likePost } from './../../actions/PostAction';
 import { useDispatch } from 'react-redux';
 import * as UserApi from '../../api/UserRequest';
 import { uploadImage } from '../../api/UploadRequest';
 
 const Post = ({ data }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
-  const [liked, setLiked] = useState(data.likes.includes(user._id));
-  const [likes, setLikes] = useState(data.likes.length);
+
   const [persons, setPersons] = useState([]);
 
   const [isUpdated, setIsUpdated] = useState(false);
   const [image, setImage] = useState(null);
   const [desc, setDesc] = useState(data?.desc || '');
+
+  const [likes, setLikes] = useState([]);
+  const [liked, setLiked] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -67,16 +69,46 @@ const Post = ({ data }) => {
     fetchPersons(0);
   }, []);
 
+  useEffect(() => {
+    setLikes(data?.likes);
+    setLiked(data?.likes?.includes(user._id));
+  }, [data]);
+
   const handleLike = () => {
-    likePost(data._id, user._id);
-    setLiked((prev) => !prev);
-    liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1);
+    dispatch(likePost(data._id, user._id));
+
+    if (liked) {
+      setLikes(data.likes.filter((like) => like !== user._id));
+      // setLiked((prev) => !prev);
+    } else {
+      setLikes([...data.likes, user._id]);
+      // setLiked((prev) => !prev);
+    }
   };
 
   const handleDeletePost = (id, data) => {
     if (window.confirm('Voulez-vous supprimer ce post ?')) {
       dispatch(deletePost(id, data));
     }
+  };
+
+  const Likes = () => {
+    if (likes.length > 0) {
+      return (
+        likes.find((like) => like === user._id) && (
+          <>
+            {' '}
+            <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
+              &nbsp;{likes.length} {likes.length === 1 ? 'Like' : 'Likes'}
+            </span>
+          </>
+        )
+      );
+    }
+
+    return (
+      <span style={{ color: 'var(--gray)', fontSize: '12px' }}> Like</span>
+    );
   };
 
   return (
@@ -151,10 +183,12 @@ const Post = ({ data }) => {
           alt=""
         />
       ) : (
-        <img
-          src={image ? '' : process.env.REACT_APP_PUBLIC_FOLDER + data.image}
-          alt=""
-        />
+        <>
+          <img
+            src={image ? '' : process.env.REACT_APP_PUBLIC_FOLDER + data.image}
+            alt=""
+          />
+        </>
       )}
 
       {image && (
@@ -187,9 +221,7 @@ const Post = ({ data }) => {
         <UilMessage />
       </div>
 
-      <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
-        {likes} J'aime
-      </span>
+      <Likes />
     </div>
   );
 };

@@ -11,6 +11,17 @@ export const getTimelinePosts = (id) => async (dispatch) => {
   }
 };
 
+export const likePost = (id, userId) => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
+  try {
+    const { data } = await PostApi.likePost(id, { userId: user.user._id });
+    dispatch({ type: 'LIKE_POST', data: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updatePost = (id) => async (dispatch) => {
   dispatch({ type: 'UPDATE_POST_START' });
   try {

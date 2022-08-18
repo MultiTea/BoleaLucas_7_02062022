@@ -70,13 +70,16 @@ export const likePost = async (req, res) => {
 
   try {
     const post = await PostModel.findById(id);
-    if (!post.likes.includes(userId)) {
-      await post.updateOne({ $push: { likes: userId } });
-      res.status(200).json('Post aimé !');
+    const index = post.likes.findIndex((id) => id === String(userId));
+    if (index === -1) {
+      post.likes.push(userId);
     } else {
-      await post.updateOne({ $pull: { likes: userId } });
-      res.status(200).json("Le post n'est plus aimé.");
+      post.likes = post.likes.filter((id) => id !== String(userId));
     }
+    const updatePost = await PostModel.findByIdAndUpdate(id, post, {
+      new: true,
+    });
+    res.status(200).json(updatePost);
   } catch (error) {
     res.status(500).json(error);
   }

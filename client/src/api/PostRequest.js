@@ -14,8 +14,8 @@ API.interceptors.request.use((req) => {
 
 export const getPost = (id) => API.get(`/post/${id}`);
 export const getTimelinePosts = (id) => API.get(`/post/${id}/timeline`);
-export const likePost = (id, userId) =>
-  API.put(`post/${id}/like`, { userId: userId });
+export const likePost = (id, userId) => API.patch(`/post/${id}/like`, userId);
+
 export const updatePost = (id, data) => async (dispatch) => {
   try {
     dispatch({ type: 'UPDATE_POST_START' });
