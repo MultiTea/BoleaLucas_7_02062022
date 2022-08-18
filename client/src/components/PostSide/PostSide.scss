@@ -33,7 +33,7 @@
       object-position: 50%;
     }
 
-    input {
+    textarea {
       background-color: var(--inputColor);
       border-radius: 10px;
       padding: 10px;
@@ -128,12 +128,14 @@
 .Post {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1.5rem 2rem 1.5rem 2rem;
   background-color: var(--cardColor);
   border-radius: 1rem;
   gap: 1rem;
 
   .detail {
+    white-space: pre-wrap;
+
     > img {
       width: 100%;
       max-height: fit-content;
@@ -149,6 +151,7 @@
       border: none;
       outline: none;
       width: -webkit-fill-available;
+      resize: vertical;
     }
   }
 }
@@ -229,5 +232,22 @@
 
   input[type='file'] {
     margin: 0 0 0.75rem 0;
+  }
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  .inputForm {
+    width: fit-content;
+  }
+
+  .ps-button {
+    padding: 5px 2rem;
+    font-size: 14px;
+    height: 2.5rem;
   }
 }

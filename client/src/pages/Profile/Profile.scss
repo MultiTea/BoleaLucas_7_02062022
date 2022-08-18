@@ -12,7 +12,7 @@
   .PostSide {
     height: fit-content !important;
   }
-  overflow: scroll;
+  overflow-y: scroll;
 
   > div {
     box-shadow: none !important;
@@ -117,13 +117,15 @@
   }
 
   .infoButton {
-    margin-top: 2rem;
-    height: 2rem !important;
+    margin-bottom: 1.5rem;
+    height: 2.5rem !important;
+    width: 40%;
   }
 }
 
 .imgUpload {
   display: flex;
+  flex-direction: column;
 
   > div {
     margin-top: 5px;
@@ -134,9 +136,4 @@
       flex-direction: column;
     }
   }
-}
-
-.infoButton {
-  width: 20%;
-  margin: 1rem 0;
 }

@@ -15,6 +15,7 @@ import { likePost } from './../../actions/PostAction';
 import { useDispatch } from 'react-redux';
 import * as UserApi from '../../api/UserRequest';
 import { uploadImage } from '../../api/UploadRequest';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 
 const Post = ({ data }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
@@ -99,7 +100,7 @@ const Post = ({ data }) => {
           <>
             {' '}
             <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
-              &nbsp;{likes.length} {likes.length === 1 ? 'Like' : 'Likes'}
+              &nbsp;{likes.length} {likes.length === 1 ? "J'aime" : "J'aimes"}
             </span>
           </>
         )
@@ -107,7 +108,7 @@ const Post = ({ data }) => {
     }
 
     return (
-      <span style={{ color: 'var(--gray)', fontSize: '12px' }}> Like</span>
+      <span style={{ color: 'var(--gray)', fontSize: '12px' }}> J'aime</span>
     );
   };
 
@@ -167,7 +168,7 @@ const Post = ({ data }) => {
         {!isUpdated && <span>{data.desc}</span>}
         {isUpdated && (
           <div>
-            <textarea
+            <ReactTextareaAutosize
               onChange={(e) => setDesc(e.target.value)}
               defaultValue={data.desc}
             />

@@ -9,6 +9,8 @@ import { UilTimes } from '@iconscout/react-unicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadImage, uploadPost } from '../../actions/UploadAction';
 
+import TextareaAutosize from 'react-textarea-autosize';
+
 const PostShare = () => {
   const loading = useSelector((state) => state.postReducer.uploading);
   const dispatch = useDispatch();
@@ -76,7 +78,7 @@ const PostShare = () => {
             }
             alt=""
           />
-          <input ref={desc} required type="text" placeholder="Quoi de neuf ?" />
+          <TextareaAutosize ref={desc} required placeholder="Quoi de neuf ?" />
         </div>
 
         <div>

@@ -2,6 +2,7 @@ import { Modal, useMantineTheme } from '@mantine/core';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 import { uploadImage } from '../../actions/UploadAction';
 import { updateUser } from '../../actions/UserAction';
 
@@ -135,7 +136,7 @@ function ProfileModal({ modalOpened, setModalOpened, data }) {
 
         <div className="inputForm">
           <label htmlFor="about">Bio</label>
-          <textarea
+          <ReactTextareaAutosize
             type="text"
             className="infoInput"
             placeholder="Bio"
